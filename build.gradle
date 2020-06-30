@@ -1,25 +1,33 @@
+apply from: rootProject.file("gradle/versions_plugin_config.gradle")
+
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.0-beta4'
-    }
+  apply from: rootProject.file("dependencies.gradle")
+
+  repositories {
+    google()
+    jcenter()
+  }
+
+  dependencies {
+    classpath deps.gradle_plugins.android
+    classpath deps.gradle_plugins.bintray_release
+    classpath deps.gradle_plugins.kotlin
+    classpath deps.gradle_plugins.spotless
+    classpath deps.gradle_plugins.versions
+  }
 }
 
 allprojects {
-    repositories {
-        jcenter()
-    }
+  repositories {
+    google()
+    jcenter()
+  }
 }
 
-//publish {
-//    userOrg = ''
-//    groupId = 'com.afollestad'
-//    artifactId = 'material-dialogs'
-//    version = '0.7.7.0'
-//    description = 'A library for implementing Material design styled dialogs across all versions of Android.'
-//    website = 'https://github.com/afollestad/material-dialogs'
-//    issueTracker = "${website}/issues"
-//    repository = "${website}.git"
-//}
+subprojects {
+  tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+      freeCompilerArgs += ['-module-name', project.path.replace(':', '')]
+    }
+  }
+}
