@@ -1,43 +1,25 @@
-apply plugin: 'com.android.application'
+ext.module_group = "com.afollestad"
+ext.module_name = "materialdialogssample"
 
-android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.0 rc3"
-
-    signingConfigs {
-        production {
-            keyAlias 'afollestad'
-            keyPassword 'aidan1995'
-            storeFile file('./keystore.jks')
-            storePassword 'aidan1995'
-        }
-    }
-
-    defaultConfig {
-        applicationId "com.afollestad.materialdialogssample"
-        minSdkVersion 9
-        targetSdkVersion 22
-        versionCode 134
-        versionName "0.7.7.0"
-    }
-    lintOptions {
-        abortOnError false
-    }
-    buildTypes {
-        debug {
-            signingConfig signingConfigs.production
-        }
-        release {
-            signingConfig signingConfigs.production
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-}
+apply from: rootProject.file("gradle/android_application_config.gradle")
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':library')
-    compile 'com.android.support:gridlayout-v7:22.2.1'
+  implementation project(':core')
+  implementation project(':input')
+  implementation project(':files')
+  implementation project(':color')
+  implementation project(':datetime')
+  implementation project(':bottomsheets')
+  implementation project(':lifecycle')
+
+  implementation deps.kotlin.stdlib8
+
+  implementation deps.androidx.core
+  implementation deps.androidx.grid_layout
+  implementation deps.androidx.recycler_view
+  implementation deps.google_material
+
+  implementation deps.afollestad.assent
+
+  debugImplementation deps.leak_canary
 }
